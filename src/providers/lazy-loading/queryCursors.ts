@@ -1,3 +1,4 @@
+import { Buffer } from 'buffer';
 import {
   doc,
   getDoc,
@@ -21,7 +22,7 @@ export function setQueryCursor(
   params: messageTypes.IParamsGetList,
   resourceName: string
 ) {
-  const key = btoa(JSON.stringify({ ...params, resourceName }));
+  const key = Buffer.from(JSON.stringify({ ...params, resourceName })).toString('base64');
   localStorage.setItem(key, document.id);
 
   const allCursorsKey = `ra-firebase-cursor-keys_${resourceName}`;
@@ -41,7 +42,7 @@ export async function getQueryCursor(
   resourceName: string,
   flogger: IFirestoreLogger
 ): Promise<FireStoreDocumentSnapshot | false> {
-  const key = btoa(JSON.stringify({ ...params, resourceName }));
+  const key = Buffer.from(JSON.stringify({ ...params, resourceName }), 'base64').toString();
   const docId = localStorage.getItem(key);
   if (!docId) {
     return false;
