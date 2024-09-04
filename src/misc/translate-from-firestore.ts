@@ -120,7 +120,7 @@ export const recursivelyMapStorageUrls = async (
   if (isArray) {
     return Promise.all(
       (fieldValue as any[]).map(async (value, index) => {
-        fieldValue[index] = await recursivelyMapStorageUrls(fireWrapper, value);
+        (fieldValue as any[])[index] = await recursivelyMapStorageUrls(fireWrapper, value);
       })
     );
   }
@@ -133,7 +133,7 @@ export const recursivelyMapStorageUrls = async (
     return Promise.all(
       Object.keys(fieldValue).map(async (key) => {
         const value = fieldValue[key];
-        fieldValue[key] = await recursivelyMapStorageUrls(fireWrapper, value);
+        (fieldValue as any)[key] = await recursivelyMapStorageUrls(fireWrapper, value);
       })
     );
   }

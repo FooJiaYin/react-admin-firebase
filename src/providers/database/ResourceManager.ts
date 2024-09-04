@@ -107,7 +107,7 @@ export class ResourceManager {
     });
   }
 
-  public async GetSingleDoc(relativePath: string, docId: string) {
+  public async GetSingleDoc(relativePath: string, docId: string): Promise<any> {
     await this.initPath(relativePath);
     const resource = this.GetResource(relativePath);
     this.flogger.logDocument(1)();
