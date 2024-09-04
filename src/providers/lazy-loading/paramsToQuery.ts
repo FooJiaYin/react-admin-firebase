@@ -75,6 +75,12 @@ export function getFiltersConstraints(filters: {
   return Object.entries(filters).flatMap(([fieldName, fieldValue]) => {
     if (Array.isArray(fieldValue)) {
       return [where(fieldName, 'array-contains-any', fieldValue)];
+    } else if (typeof fieldValue === 'object') {
+      // if fieldValue is an object, { a: 'value', b: 'value' }
+      // then we want to return a query for each key in the object
+      return Object.entries(fieldValue).map(([key, value]) => {
+        return where(fieldName + '.' + key, '==', value);
+      });
     } else if (Object.keys(filters).length === 1 && isNaN(fieldValue) && typeof fieldValue !== 'string') {
       return [
         where(fieldName, '>=', fieldValue),
